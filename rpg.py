@@ -28,11 +28,12 @@ class Character(object):
             return '%s was too fast %s could not get away.' %(monster.name,self.name)
         
 class Monster(Character):
-    def __init(self):
-        Character__init__(name,hp,atk,defence,coin)
+    def __init__(self):
+        Character.__init__(self,'Monster',10,2,2,0,0)
+        self.key = 'penis'
         
 player = Character('Ryan',100,10,4,0,0)
-monster = Monster('monster',10,1,1,10,10)
+monster = Monster()
         
 
     
