@@ -13,22 +13,22 @@ class Character(object):
         
     def attack(self,monster):
         if self.atk < monster.defence:
-            return '%s was not hurt their defence is too high' %(monster.name)
+            return '%s was not hurt their defence is too high\n' %(monster.name)
         else:
             monster.hp = monster.hp -(self.atk - monster.defence)
         if monster.hp < 1:
             self.exp = self.exp + monster.exp
             self.coin = self.coin + monster.coin
-            return '%s died and gave %s exp and %s coins.' %(monster.name,monster.exp,monster.coin)
+            return '%s died and gave %s exp and %s coins.\n' %(monster.name,monster.exp,monster.coin)
 
-        return '%s was attacked for %s HP = %s' %(monster.name,(self.atk-monster.defence),monster.hp)
+        return '%s was attacked for %s HP = %s\n' %(monster.name,(self.atk-monster.defence),monster.hp)
 
     def run(self,monster):
         chance = randint(1,2)
         if chance%2 == 0:
-            return '%s ran sucessfully.' %(self.name)
+            return True
         else:
-            return '%s was too fast %s could not get away.' %(monster.name,self.name)
+            return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
     def walkR(self):
         self.x = self.x + 1
@@ -59,10 +59,20 @@ class Character(object):
             self.battle(self.monster)
         return 'coord(%s,%s)' %(self.x,self.y)
     def battle(self,monster):
-        while monster.hp > 1:
-            print self.attack(monster)
+        print 'a monster has jumped at you\n'
+        while self.monster:
+            decide = raw_input('what do you do? (attack or run)?')
+            if decide == 'attack':
+                print self.attack(monster)
+                if self.monster < 1:
+                    self.monster = None
+            if decide == 'run':
+                if self.run(monster) == True:
+                    print '%s ran sucessfully.\n' %(self.name)
+                    self.monster = None
+                else:
+                    print self.run(monster)
             print monster.attack(player)
-        self.monster = None
     def status(self):
         return 'hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.hp,player.atk,player.defence,player.exp,player.coin)
     def help(self):
@@ -105,3 +115,10 @@ while(player.hp > 0):
                 break
         if not commandFound:
             print "%s doesn't understand the suggestion." % player.name
+
+
+
+    
+        
+
+    
