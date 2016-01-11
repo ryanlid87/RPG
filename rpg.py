@@ -25,7 +25,7 @@ class Character(object):
 
     def run(self,monster):
         chance = randint(1,2)
-        if chance%2 == 0:
+        if chance == 2:
             return True
         else:
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
@@ -66,13 +66,15 @@ class Character(object):
                 print self.attack(monster)
                 if self.monster < 1:
                     self.monster = None
+                else:
+                    print monster.attack(player)
             if decide == 'run':
                 if self.run(monster) == True:
                     print '%s ran sucessfully.\n' %(self.name)
                     self.monster = None
                 else:
                     print self.run(monster)
-            print monster.attack(player)
+                    print monster.attack(player)
     def status(self):
         return 'hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.hp,player.atk,player.defence,player.exp,player.coin)
     def help(self):
@@ -120,5 +122,3 @@ while(player.hp > 0):
 
     
         
-
-    
