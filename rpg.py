@@ -31,15 +31,12 @@ class Character(object):
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
     def __walk__(self, dx, dy):
-        if [self.x + dx, self.y + dy] in Map.xy:
+        move = [self.x + dx,self.y + dy]
+        if Map.get(move) == 'grass':
             self.x += dx
             self.y += dy
-        else:
-            return 'There is a wall in your way' + '\n' + 'coord(%s, %s)' %(self.x,self.y)
-        area = randint(0,1)
-        if area == 1:
-            self.monster = Monster()
-            self.battle(self.monster)
+        elif Map.get(move) == 'wall':
+            return 'You walked into a wall.'
         return 'coord(%s, %s)' %(self.x,self.y)
 
     def walkR(self):
@@ -97,6 +94,15 @@ class Map():
         for x in range (0,4):
             for y in range(0,4):
                 self.xy.append([x,y])
+    def get(self,move):
+        if move in self.xy:
+            area = randint(0,1)
+            if area == 1:
+                Character.monster = Monster()
+                player.battle(Character.monster)
+            return 'grass'
+        else:
+            return 'wall'
         
     
 Map = Map()
