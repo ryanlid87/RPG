@@ -2,14 +2,18 @@ from random import randint
 
 class Character(object):
     def __init__(self,name,hp,atk,defence,exp,coin):
+        data = file('primes.txt').read().split('\n')
         self.name = name
         self.hp = hp
         self.atk = atk
         self.defence = defence
         self.exp = exp
         self.coin = coin
-        self.x = 0
-        self.y = 0
+        for x in range(0,len(data)):
+            for y in range(0,len(data[x])):
+                if data[x][y] == 'S':
+                    self.x = x
+                    self.y = y
 
     def attack(self,monster):
         if self.atk < monster.defence:
@@ -31,13 +35,14 @@ class Character(object):
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
     def __walk__(self, dx, dy):
-        move = [self.x + dx,self.y + dy]
-        if Map.get(move) == 'grass' or Map.get(move) == 'monster':
+        x = self.x + dx
+        y = self.y + dy
+        if Map.get(x,y) == 'grass' or Map.get(x,y) == 'monster':
             self.x += dx
             self.y += dy
-        if Map.get(move) == 'wall':
+        elif Map.get(x,y) == 'wall':
             return 'You walked into a wall.'
-        elif Map.get(move) == 'monster':
+        elif Map.get(x,y) == 'monster':
             self.monster = Monster()
             player.battle(self.monster)
         return 'coord(%s, %s)' %(self.x,self.y)
@@ -92,22 +97,21 @@ class Monster(Character):
 
 class Map():
     def __init__(self):
-        self.xy = []
-        #self.blocked = blocked
-        for x in range (0,4):
-            for y in range(0,4):
-                self.xy.append([x,y])
-    def get(self,move):
-        if move in self.xy:
-            area = randint(0,1)
-            if area == 1:
-                return 'monster'
-            else:
-                return 'grass'
-        else:
+        self.data = file('primes.txt').read().split('\n')
+                
+    def get(self,x,y):
+        try:
+            if self.data[x][y] == '-':
+                area = randint(0,1)
+                if area == 1:
+                    return 'monster'
+                else:
+                    return 'grass'
+            elif self.data[x][y] == 'W':
+                return 'wall'
+        except:
             return 'wall'
         
-    
 Map = Map()
 player = Character('Ryan',100,10,4,0,0)
 
