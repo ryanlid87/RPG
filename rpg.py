@@ -32,10 +32,10 @@ class Character(object):
 
     def __walk__(self, dx, dy):
         move = [self.x + dx,self.y + dy]
-        if Map.get(move) == 'grass':
+        if Map.get(move) == 'grass' or Map.get(move) == 'monster':
             self.x += dx
             self.y += dy
-        elif Map.get(move) == 'wall':
+        if Map.get(move) == 'wall':
             return 'You walked into a wall.'
         elif Map.get(move) == 'monster':
             self.monster = Monster()
