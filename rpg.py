@@ -9,13 +9,7 @@ class Character(object):
         self.exp = exp
         self.coin = coin
         
-    def start(self):
-        data = file('primes.txt').read().split('\n')
-        for x in range(0,len(data)):
-            for y in range(0,len(data[x])):
-                if data[x][y] == 'S':
-                    self.x = x
-                    self.y = y
+
 
     def attack(self,monster):
         if self.atk < monster.defence:
@@ -116,10 +110,16 @@ class Map():
                 return 'wall'
         except:
             return 'wall'
+    def getstart(self):
+        for x in range(0,len(self.data)):
+            for y in range(0,len(self.data[x])):
+                if self.data[x][y] == 'S':
+                    player.x = x
+                    player.y = y
         
 Map = Map()
 player = Character('Ryan',100,10,4,0,0)
-player.start()
+Map.getstart()
 
 
 Commands = {
