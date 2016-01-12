@@ -37,6 +37,9 @@ class Character(object):
             self.y += dy
         elif Map.get(move) == 'wall':
             return 'You walked into a wall.'
+        elif Map.get(move) == 'monster':
+            self.monster = Monster()
+            player.battle(self.monster)
         return 'coord(%s, %s)' %(self.x,self.y)
 
     def walkR(self):
@@ -98,9 +101,9 @@ class Map():
         if move in self.xy:
             area = randint(0,1)
             if area == 1:
-                Character.monster = Monster()
-                player.battle(Character.monster)
-            return 'grass'
+                return 'monster'
+            else:
+                return 'grass'
         else:
             return 'wall'
         
