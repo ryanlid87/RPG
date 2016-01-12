@@ -31,38 +31,28 @@ class Character(object):
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
     def __walk__(self, dx, dy):
-        self.x += dx
-        self.y += dy
+        if [self.x + dx, self.y + dy] in Map.xy:
+            self.x += dx
+            self.y += dy
+        else:
+            return 'There is a wall in your way' + '\n' + 'coord(%s, %s)' %(self.x,self.y)
         area = randint(0,1)
         if area == 1:
             self.monster = Monster()
             self.battle(self.monster)
         return 'coord(%s, %s)' %(self.x,self.y)
-        
 
     def walkR(self):
-        if self.x + 1 in Map.x:
-            return self.__walk__(1, 0)
-        else:
-            return 'There is a wall in the way. coord(%s,%s)' %(self.x,self.y)
+        return self.__walk__(1, 0)
 
     def walkL(self):
-        if self.x - 1 in Map.x:
             return self.__walk__(-1,0)
-        else:
-            return 'There is a wall in the way. coord(%s,%s)' %(self.x,self.y)
 
     def walkU(self):
-        if self.y + 1 in Map.y:
             return self.__walk__(0, 1)
-        else:
-            return 'There is a wall in the way. coord(%s,%s)' %(self.x,self.y)
 
     def walkD(self):
-        if self.y - 1 in Map.y:
             return self.__walk__(0, -1)
-        else:
-            return 'There is a wall in the way. coord(%s,%s)' %(self.x,self.y)
 
     def battle(self,monster):
         print 'a monster has jumped at you\n'
@@ -70,7 +60,7 @@ class Character(object):
             decide = raw_input('what do you do? (attack or run)?')
             if decide == 'attack':
                 print self.attack(monster)
-                if self.monster < 1:
+                if self.monster.hp < 1:
                     self.monster = None
                 else:
                     print monster.attack(player)
@@ -101,35 +91,39 @@ class Monster(Character):
         self.atk = self.atk + self.equip[1]
 
 class Map():
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-
-Map = Map([0,2,3,4],[0,1,2,3])
+    def __init__(self):
+        self.xy = []
+        #self.blocked = blocked
+        for x in range (0,4):
+            for y in range(0,4):
+                self.xy.append([x,y])
+        
+    
+Map = Map()
 player = Character('Ryan',100,10,4,0,0)
 
 
-#Commands = {
-#    'up': player.walkU,
-#    'down': player.walkD,
-#    'left': player.walkL,
-#    'right': player.walkR,
-#    'status': player.status,
-#    'help': player.help,
-#    }
+Commands = {
+    'up': player.walkU,
+    'down': player.walkD,
+    'left': player.walkL,
+    'right': player.walkR,
+    'status': player.status,
+    'help': player.help,
+    }
 
-#while(player.hp > 0):
-#    line = raw_input("> ")
-#    args = line.split()
-#    if len(args) > 0:
-#        commandFound = False
-#        for c in Commands.keys():
-#            if args[0] == c[:len(args[0])]:
-#                print Commands[c]()
-#                commandFound = True
-#                break
-#        if not commandFound:
-#            print "%s doesn't understand the suggestion." % player.name
+while(player.hp > 0):
+    line = raw_input("> ")
+    args = line.split()
+    if len(args) > 0:
+        commandFound = False
+        for c in Commands.keys():
+            if args[0] == c[:len(args[0])]:
+                print Commands[c]()
+                commandFound = True
+                break
+        if not commandFound:
+            print "%s doesn't understand the suggestion." % player.name
 
 
 
