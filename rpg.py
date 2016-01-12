@@ -37,7 +37,7 @@ class Character(object):
         if area == 1:
             self.monster = Monster()
             self.battle(self.monster)
-        return 'coord(%s, %s)'
+        return 'coord(%s, %s)' %(self.x,self.y)
 
     def walkR(self):
         return self.__walk__(0, 1)
