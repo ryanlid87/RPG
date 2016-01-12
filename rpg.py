@@ -10,7 +10,7 @@ class Character(object):
         self.coin = coin
         self.x = 0
         self.y = 0
-        
+
     def attack(self,monster):
         if self.atk < monster.defence:
             return '%s was not hurt their defence is too high\n' %(monster.name)
@@ -30,34 +30,27 @@ class Character(object):
         else:
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
+    def __walk__(self, dy, dx):
+        self.x += dx
+        self.y += dy
+        area = randint(0,1)
+        if area == 1:
+            self.monster = Monster()
+            self.battle(self.monster)
+        return 'coord(%s, %s)'
+
     def walkR(self):
-        self.x = self.x + 1
-        area = randint(0,1)
-        if  area == 1:
-            self.monster = Monster()
-            self.battle(self.monster)
-        return 'coord(%s,%s)' %(self.x,self.y)
+        return self.__walk__(0, 1)
+
     def walkL(self):
-        self.x = self.x - 1
-        area = randint(0,1)
-        if  area == 1:
-            self.monster = Monster()
-            self.battle(self.monster)
-        return 'coord(%s,%s)' %(self.x,self.y)
+        return self.__walk__(0,-1)
+
     def walkU(self):
-        self.y = self.y + 1
-        area = randint(0,1)
-        if  area == 1:
-            self.monster = Monster()
-            self.battle(self.monster)
-        return 'coord(%s,%s)' %(self.x,self.y)
+        return self.__walk__(1, 0)
+
     def walkD(self):
-        self.y = self.y - 1
-        area = randint(0,1)
-        if  area == 1:
-            self.monster = Monster()
-            self.battle(self.monster)
-        return 'coord(%s,%s)' %(self.x,self.y)
+        return self.__walk__(-1, 0)
+
     def battle(self,monster):
         print 'a monster has jumped at you\n'
         while self.monster:
@@ -86,14 +79,14 @@ class Character(object):
         status - shows status of character
                 '''
 
-                
+
 class Monster(Character):
     def __init__(self):
         Character.__init__(self,'Monster',10,2,2,1,1)
         #equip has name of weapon, atk value
         self.equip = ['Rubber Sword',1]
         self.atk = self.atk + self.equip[1]
-        
+
 player = Character('Ryan',100,10,4,0,0)
 
 Commands = {
@@ -120,5 +113,5 @@ while(player.hp > 0):
 
 
 
-    
-        
+
+
