@@ -2,13 +2,15 @@ from random import randint
 
 class Character(object):
     def __init__(self,name,hp,atk,defence,exp,coin):
-        data = file('primes.txt').read().split('\n')
         self.name = name
         self.hp = hp
         self.atk = atk
         self.defence = defence
         self.exp = exp
         self.coin = coin
+        
+    def start(self):
+        data = file('primes.txt').read().split('\n')
         for x in range(0,len(data)):
             for y in range(0,len(data[x])):
                 if data[x][y] == 'S':
@@ -37,12 +39,13 @@ class Character(object):
     def __walk__(self, dx, dy):
         x = self.x + dx
         y = self.y + dy
-        if Map.get(x,y) == 'grass' or Map.get(x,y) == 'monster':
+        Mapcall = Map.get(x,y)
+        if Mapcall == 'grass' or Mapcall == 'monster':
             self.x += dx
             self.y += dy
-        elif Map.get(x,y) == 'wall':
+        if Mapcall == 'wall':
             return 'You walked into a wall.'
-        elif Map.get(x,y) == 'monster':
+        if Mapcall == 'monster':
             self.monster = Monster()
             player.battle(self.monster)
         return 'coord(%s, %s)' %(self.x,self.y)
@@ -61,6 +64,7 @@ class Character(object):
 
     def battle(self,monster):
         print 'a monster has jumped at you\n'
+        
         while self.monster:
             decide = raw_input('what do you do? (attack or run)?')
             if decide == 'attack':
@@ -70,11 +74,12 @@ class Character(object):
                 else:
                     print monster.attack(player)
             if decide == 'run':
-                if self.run(monster) == True:
+                runattempt = self.run(monster)
+                if runattempt == True:
                     print '%s ran sucessfully.\n' %(self.name)
                     self.monster = None
                 else:
-                    print self.run(monster)
+                    print runattempt
                     print monster.attack(player)
     def status(self):
         return 'hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.hp,player.atk,player.defence,player.exp,player.coin)
@@ -101,19 +106,20 @@ class Map():
                 
     def get(self,x,y):
         try:
-            if self.data[x][y] == '-':
+            if self.data[x][y] == '-' or self.data[x][y] == 'S':
                 area = randint(0,1)
                 if area == 1:
                     return 'monster'
                 else:
                     return 'grass'
-            elif self.data[x][y] == 'W':
+            if self.data[x][y] == 'W':
                 return 'wall'
         except:
             return 'wall'
         
 Map = Map()
 player = Character('Ryan',100,10,4,0,0)
+player.start()
 
 
 Commands = {
