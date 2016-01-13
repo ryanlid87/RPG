@@ -111,11 +111,8 @@ class Map():
             return 'wall'
         
     def getstart(self):
-        for x in range(0,len(self.data)):
-            for y in range(0,len(self.data[x])):
-                if self.data[x][y] == 'S':
-                    player.x = x
-                    player.y = y
+        player.x = self.level['start']['x']
+        player.y = self.level['start']['y']
         
 Map = Map()
 player = Character('Ryan',100,10,4,0,0)
