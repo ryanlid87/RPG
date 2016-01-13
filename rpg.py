@@ -1,4 +1,5 @@
 from random import randint
+import json
 
 class Character(object):
     def __init__(self,name,hp,atk,defence,exp,coin):
@@ -8,8 +9,6 @@ class Character(object):
         self.defence = defence
         self.exp = exp
         self.coin = coin
-        
-
 
     def attack(self,monster):
         if self.atk < monster.defence:
@@ -34,7 +33,7 @@ class Character(object):
         x = self.x + dx
         y = self.y + dy
         Mapcall = Map.get(x,y)
-        if Mapcall == 'grass' or Mapcall == 'monster':
+        if Mapcall != 'wall':
             self.x += dx
             self.y += dy
         if Mapcall == 'wall':
@@ -86,7 +85,6 @@ class Character(object):
         status - shows status of character
                 '''
 
-
 class Monster(Character):
     def __init__(self):
         Character.__init__(self,'Monster',10,2,2,1,1)
@@ -96,11 +94,12 @@ class Monster(Character):
 
 class Map():
     def __init__(self):
-        self.data = file('primes.txt').read().split('\n')
+        self.level = json.load(open('level.json'))
+        self.data = self.level["map"]
                 
     def get(self,x,y):
         try:
-            if self.data[x][y] == '-' or self.data[x][y] == 'S':
+            if self.data[x][y] != 'W':
                 area = randint(0,1)
                 if area == 1:
                     return 'monster'
@@ -110,6 +109,7 @@ class Map():
                 return 'wall'
         except:
             return 'wall'
+        
     def getstart(self):
         for x in range(0,len(self.data)):
             for y in range(0,len(self.data[x])):
