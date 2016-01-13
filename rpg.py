@@ -39,6 +39,8 @@ class Character(object):
             self.y += dy
         if Mapcall == 'door':
             Map.update(Map.mname)
+            player.x = Map.level['doors'][0]['x']
+            player.y = Map.level['doors'][0]['y']
             print 'you entered a new room' # just for now
         if Mapcall == 'wall':
             return 'You walked into a wall.'
@@ -105,22 +107,18 @@ class Map():
     def update(self,mname):
         self.data = self.level['doors'][0][mname]
         Map.mname = self.data
-        player.x = self.data['x']
-        player.y = self.data['y']
+        self.data = self.level[str(Map.mname)]
 
     def get(self,x,y):
-        try:
-            if self.data[x][y] == '-':
-                area = randint(0,1)
-                if area == 1:
-                    return 'monster'
-                else:
-                    return 'grass'
-            if self.data[x][y] == 'D':
-                return 'door'
-            if self.data[x][y] == 'W':
-                return 'wall'
-        except:
+        if self.data[x][y] == '-':
+            area = randint(0,1)
+            if area == 1:
+                return 'monster'
+            else:
+                return 'grass'
+        if self.data[x][y] == 'D':
+            return 'door'
+        if self.data[x][y] == 'W':
             return 'wall'
 
     def getstart(self):
