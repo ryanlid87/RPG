@@ -91,7 +91,7 @@ class Character(object):
 
 class Monster(Character):
     def __init__(self):
-        Character.__init__(self,'Monster',10,2,2,1,1)
+        Character.__init__(self,'Monster',10,2,2,1,1,(0,0))
         #equip has name of weapon, atk value
         self.equip = ['Rubber Sword',1]
         self.atk = self.atk + self.equip[1]
