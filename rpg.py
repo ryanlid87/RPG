@@ -33,9 +33,12 @@ class Character(object):
         x = self.x + dx
         y = self.y + dy
         Mapcall = Map.get(x,y)
-        if Mapcall != 'wall':
+        if Mapcall == 'grass' or Mapcall == 'monster':
             self.x += dx
             self.y += dy
+        if Mapcall == 'door':
+            Map.update(Map.mname)
+            print 'you entered a new room' # just for now
         if Mapcall == 'wall':
             return 'You walked into a wall.'
         if Mapcall == 'monster':
@@ -95,16 +98,25 @@ class Monster(Character):
 class Map():
     def __init__(self):
         self.level = json.load(open('level.json'))
-        self.data = self.level["map"]
-                
+        self.mname = 'map'
+        self.data = self.level[self.mname]
+
+    def update(self,mname):
+        self.data = self.level['doors'][0][mname]
+        Map.mname = self.data
+        player.x = self.data['x']
+        player.y = self.data['y']
+        
     def get(self,x,y):
         try:
-            if self.data[x][y] != 'W':
+            if self.data[x][y] == '-':
                 area = randint(0,1)
                 if area == 1:
                     return 'monster'
                 else:
                     return 'grass'
+            if self.data[x][y] == 'D':
+                return 'door'
             if self.data[x][y] == 'W':
                 return 'wall'
         except:
