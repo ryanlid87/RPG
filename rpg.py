@@ -2,13 +2,14 @@ from random import randint
 import json
 
 class Character(object):
-    def __init__(self,name,hp,atk,defence,exp,coin):
+    def __init__(self,name,hp,atk,defence,exp,coin,position):
         self.name = name
         self.hp = hp
         self.atk = atk
         self.defence = defence
         self.exp = exp
         self.coin = coin
+        self.x, self.y = position
 
     def attack(self,monster):
         if self.atk < monster.defence:
@@ -60,7 +61,7 @@ class Character(object):
 
     def battle(self,monster):
         print 'a monster has jumped at you\n'
-        
+
         while self.monster:
             decide = raw_input('what do you do? (attack or run)?')
             if decide == 'attack':
@@ -106,7 +107,7 @@ class Map():
         Map.mname = self.data
         player.x = self.data['x']
         player.y = self.data['y']
-        
+
     def get(self,x,y):
         try:
             if self.data[x][y] == '-':
@@ -121,14 +122,13 @@ class Map():
                 return 'wall'
         except:
             return 'wall'
-        
+
     def getstart(self):
-        player.x = self.level['start']['x']
-        player.y = self.level['start']['y']
-        
+        start = self.level['start']
+        return (start['x'], start['y'])
+
 Map = Map()
-player = Character('Ryan',100,10,4,0,0)
-Map.getstart()
+player = Character('Ryan',100,10,4,0,0, Map.getstart())
 
 
 Commands = {
