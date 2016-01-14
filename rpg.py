@@ -33,6 +33,31 @@ class Character(object):
         else:
             return '%s was too fast %s could not get away.\n' %(monster.name,self.name)
 
+    def battle(self,monster):
+        print self.monster.name + ' has jumped at you\n'
+
+        while self.monster:
+            decide = raw_input('what do you do? (attack or run)?')
+            if decide == 'attack':
+                print self.attack(monster)
+                if self.monster.hp < 1:
+                    self.monster = None
+                else:
+                    print monster.attack(player)
+            if decide == 'run':
+                runattempt = self.run(monster)
+                if runattempt == True:
+                    print '%s ran sucessfully.\n' %(self.name)
+                    self.monster = None
+                else:
+                    print runattempt
+                    print monster.attack(player)
+
+class Player(Character):
+    
+    def __init__(self):
+        Character.__init__(self,'Ryan',10,2,2,1,1,Map.getstart(),[])
+        
     def __walk__(self, dx, dy):
         x = self.x + dx
         y = self.y + dy
@@ -70,25 +95,6 @@ class Character(object):
     def walkD(self):
             return self.__walk__(0, -1)
 
-    def battle(self,monster):
-        print self.monster.name + ' has jumped at you\n'
-
-        while self.monster:
-            decide = raw_input('what do you do? (attack or run)?')
-            if decide == 'attack':
-                print self.attack(monster)
-                if self.monster.hp < 1:
-                    self.monster = None
-                else:
-                    print monster.attack(player)
-            if decide == 'run':
-                runattempt = self.run(monster)
-                if runattempt == True:
-                    print '%s ran sucessfully.\n' %(self.name)
-                    self.monster = None
-                else:
-                    print runattempt
-                    print monster.attack(player)
     def status(self):
         return 'hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.hp,player.atk,player.defence,player.exp,player.coin)
     def help(self):
@@ -101,17 +107,12 @@ class Character(object):
                 '''
 
 class Monster(Character):
-    def __init__(self,name):
-        Character.__init__(self,name,10,2,2,1,1,(0,0),[])
-        #equip has name of weapon, atk value
-        if name == 'spider':
-            self.hp = 20
-            self.atk = 10
-            self.defence = 5
-            self.exp = 100
-            self.coin = 1000
-            self.equip = ['Rubber Sword',2]
-            self.atk = self.atk + self.equip[1]
+    def __init__(self):
+        Character.__init__(self,'blob',10,2,2,1,1,(0,0),[])
+
+class Spider(Monster):
+    def __init__(self):
+        Character.__init__(self,'spider',20,10,5,100,1000,(0,0),[])
 
 class Map():
     def __init__(self):
@@ -148,7 +149,7 @@ class Map():
         return (start['x'], start['y'])
 
 Map = Map()
-player = Character('Ryan',100,10,4,0,0, Map.getstart(),[])
+player = Player()
 
 
 Commands = {
