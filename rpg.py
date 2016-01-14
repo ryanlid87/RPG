@@ -2,7 +2,7 @@ from random import randint
 import json
 
 class Character(object):
-    def __init__(self,name,hp,atk,defence,exp,coin,position):
+    def __init__(self,name,hp,atk,defence,exp,coin,position,flags):
         self.name = name
         self.hp = hp
         self.atk = atk
@@ -10,7 +10,8 @@ class Character(object):
         self.exp = exp
         self.coin = coin
         self.x, self.y = position
-
+        self.flags = []
+        
     def attack(self,monster):
         if self.atk < monster.defence:
             return '%s was not hurt their defence is too high\n' %(monster.name)
@@ -19,6 +20,8 @@ class Character(object):
         if monster.hp < 1:
             self.exp = self.exp + monster.exp
             self.coin = self.coin + monster.coin
+            if monster.name == 'spider':
+                player.flags.append('spider')
             return '%s died and gave %s exp and %s coins.\n' %(monster.name,monster.exp,monster.coin)
 
         return '%s was attacked for %s HP = %s\n' %(monster.name,(self.atk-monster.defence),monster.hp)
@@ -39,14 +42,20 @@ class Character(object):
             self.y += dy
         if Mapcall == 'door':
             Map.update(Map.mname)
-            player.x = Map.level['doors'][0]['x']
-            player.y = Map.level['doors'][0]['y']
-            print 'you entered a new room' # just for now
+            print '%s walked through a door and is now in %s.\n' %(player.name,Map.mname)
         if Mapcall == 'wall':
             return 'You walked into a wall.'
         if Mapcall == 'monster':
-            self.monster = Monster()
+            self.monster = Monster('Monster')
             player.battle(self.monster)
+        if Mapcall == 'boss':
+            if Map.mname == 'spiderboss' and not 'spider' in player.flags:
+                self.monster = Monster('spider')
+                player.battle(self.monster)
+            if Map.mname == 'spiderboss' and 'spider' in player.flags:
+                self.x += dx
+                self.y += dy
+                print 'Here lies the dead spiderboss'
         return 'coord(%s, %s)' %(self.x,self.y)
 
     def walkR(self):
@@ -62,7 +71,7 @@ class Character(object):
             return self.__walk__(0, -1)
 
     def battle(self,monster):
-        print 'a monster has jumped at you\n'
+        print self.monster.name + ' has jumped at you\n'
 
         while self.monster:
             decide = raw_input('what do you do? (attack or run)?')
@@ -92,11 +101,17 @@ class Character(object):
                 '''
 
 class Monster(Character):
-    def __init__(self):
-        Character.__init__(self,'Monster',10,2,2,1,1,(0,0))
+    def __init__(self,name):
+        Character.__init__(self,name,10,2,2,1,1,(0,0),[])
         #equip has name of weapon, atk value
-        self.equip = ['Rubber Sword',1]
-        self.atk = self.atk + self.equip[1]
+        if name == 'spider':
+            self.hp = 20
+            self.atk = 10
+            self.defence = 5
+            self.exp = 100
+            self.coin = 1000
+            self.equip = ['Rubber Sword',2]
+            self.atk = self.atk + self.equip[1]
 
 class Map():
     def __init__(self):
@@ -105,28 +120,35 @@ class Map():
         self.data = self.level[self.mname]
 
     def update(self,mname):
-        self.data = self.level['doors'][0][mname]
-        Map.mname = self.data
-        self.data = self.level[str(Map.mname)]
+        for x in range(0,len(self.level['doors'])):
+            if mname in self.level['doors'][x]:
+                if player.x == self.level['doors'][x]['ex'] and player.y == self.level['doors'][x]['ey']:
+                    self.data = str(self.level['doors'][x][mname])
+                    self.mname = self.data
+                    player.x = self.level['doors'][x]['x']
+                    player.y = self.level['doors'][x]['y']
+                    self.data = self.level[str(self.mname)]
 
     def get(self,x,y):
-        if self.data[x][y] == '-':
+        if self.data[y][x] == '-':
             area = randint(0,1)
             if area == 1:
                 return 'monster'
             else:
                 return 'grass'
-        if self.data[x][y] == 'D':
+        if self.data[y][x] == 'D':
             return 'door'
-        if self.data[x][y] == 'W':
+        if self.data[y][x] == 'W':
             return 'wall'
+        if self.data[y][x] == 'B':
+            return 'boss'
 
     def getstart(self):
         start = self.level['start']
         return (start['x'], start['y'])
 
 Map = Map()
-player = Character('Ryan',100,10,4,0,0, Map.getstart())
+player = Character('Ryan',100,10,4,0,0, Map.getstart(),[])
 
 
 Commands = {
