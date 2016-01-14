@@ -3,27 +3,45 @@
 "WWWWWWWWWW",
 "D--------W",
 "W--------W",
-"W--------W",
-"W--------W",
-"W--------W",
-"W--------W",
-"W--------W",
-"W--------W",
 "WWWWWWWWWW"
 ],
 
 "start":
-{"x":1,"y":1},
+{
+"x":1,"y":1
+},
 
 "map2":[
 "WWWW",
+"W---WWWWWW",
+"D--------D",
+"w---WWWWWW",
+"WWWWW"
+],
+
+"spiderboss":[
+"WWWW",
+"W-BW",
+"D--W",
 "W--W",
-"D--------W",
-"w---W",
 "WWWWW"
 ],
 
 "doors":[
-{"x":1, "y":2, "map":"map1"}]
+
+{"ex":1, "ey":1, "x":1, "y":2, "map":"map2"
+},
+
+{"ex":1, "ey":2, "x":1, "y":1, "map2":"map"
+},
+
+{"ex":8, "ey":2, "x":1, "y":2, "map2":"spiderboss"
+},
+
+{"ex":1, "ey":2, "x":8, "y":2, "spiderboss":"map2"
+}
+
+]
+
 
 }
