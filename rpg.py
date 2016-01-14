@@ -56,7 +56,7 @@ class Character(object):
 class Player(Character):
     
     def __init__(self):
-        Character.__init__(self,'Ryan',10,2,2,1,1,Map.getstart(),[])
+        Character.__init__(self,'Ryan',100,10,3,0,0,Map.getstart(),[])
         
     def __walk__(self, dx, dy):
         x = self.x + dx
@@ -71,11 +71,11 @@ class Player(Character):
         if Mapcall == 'wall':
             return 'You walked into a wall.'
         if Mapcall == 'monster':
-            self.monster = Monster('Monster')
+            self.monster = Monster()
             player.battle(self.monster)
         if Mapcall == 'boss':
             if Map.mname == 'spiderboss' and not 'spider' in player.flags:
-                self.monster = Monster('spider')
+                self.monster = Spider()
                 player.battle(self.monster)
             if Map.mname == 'spiderboss' and 'spider' in player.flags:
                 self.x += dx
