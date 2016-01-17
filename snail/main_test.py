@@ -28,22 +28,23 @@ class TestingIOSystem(BaseIOSystem):
         self.path = [mapping[action] for action in path]
 
     def attackMissed(self, attacker, defender):
-        self.events.append("attackMissed")
+        self.events.append("attackMissed %s -> %s" % (attacker, defender))
 
     def attackHit(self, attacker, defender, damage):
-        self.events.append("attackHit")
+        self.events.append("attackHit %s -> %s for %s" %
+                           (attacker, defender, damage))
 
     def runSuccess(self, attacker, defender):
-        self.events.append("runSuccess")
+        self.events.append("runSuccess %s -> %s" % (attacker, defender))
 
     def runFailed(self, attacker, defender):
-        self.events.append("runFailed")
+        self.events.append("runFailed %s -> %s" % (attacker, defender))
 
     def enteredLocation(self, pos):
-        self.events.append("enteredLocation")
+        self.events.append("enteredLocation %s" % pos)
 
     def teleported(self, pos):
-        self.events.append("teleported")
+        self.events.append("teleported to %s" % pos)
 
     def getBattleAction(self, player, other):
         return Action.Battle.Attack
@@ -63,7 +64,10 @@ except EndOfInputException:
     # Game is now over, we can check things on the engine
     # and ioSystem to make sure nothing went too wrong.
     print "Game finished:"
-    print "Events: %s" % ioSystem.events
+    print "-- events --"
+    for event in ioSystem.events:
+        print event
+    print "-- ending stats --"
     print engine.player.fullDescription()
     # We don't actually assert anything, but if we make it here
     # we can at least play though the minimal game and see
