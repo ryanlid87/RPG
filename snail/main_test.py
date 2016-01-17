@@ -63,6 +63,7 @@ except EndOfInputException:
     # Game is now over, we can check things on the engine
     # and ioSystem to make sure nothing went too wrong.
     print "Game finished:"
+    print "Events: %s" % ioSystem.events
     print engine.player.fullDescription()
     # We don't actually assert anything, but if we make it here
     # we can at least play though the minimal game and see
