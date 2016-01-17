@@ -28,7 +28,8 @@ class BaseIOSystem(object):
     def teleported(self, pos):
         raise Exception("unimplemented")
 
-class ConsoleIOSystem:
+
+class ConsoleIOSystem(BaseIOSystem):
     """Prompt the user via raw_input and show output via print"""
     # Handlers for various actions in the game
     def attackMissed(self, attacker, defender):

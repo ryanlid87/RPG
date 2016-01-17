@@ -56,8 +56,6 @@ class Level(object):
     def setTile(self, location, tile):
         self.rooms[location.room].setTile(location.x, location.y, tile)
     def at(self, location):
-        print location
-        print self.rooms
         return self.rooms[location.room].at(location.x,location.y)
 
 

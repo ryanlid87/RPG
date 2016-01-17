@@ -19,6 +19,15 @@ class CharacterBase(object):
     def __str__(self):
         return "%s: %s" % (self.name, self.hp)
 
+    def fullDescription(self):
+        return """
+Name......:{name}
+Health....:{hp}
+Attack....:{attack}
+Defence...:{defence}
+Experience:{experience}
+Coins.....:{coins}""".format(**self.__dict__).lstrip()
+
 # Generates a class sort of like:
 # class CharacterBase(object):
 #     def __init__(self, name, hp....):
