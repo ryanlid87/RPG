@@ -1,0 +1,76 @@
+{
+  "spawn":{
+    "room":"room1",
+    "at":{
+      "x":1,
+      "y":2
+    }
+  },
+  "room1":{
+    "map":[
+      "WWWWWWWW",
+      "W m    W",
+      "W     mD",
+      "W  m   W",
+      "WWWWWWWW"
+    ],
+    "legend":{
+      "W":{"type": "Wall"},
+      " ":{"type": "Grass"},
+      "m":{"type": "Monster"},
+      "D":{"type": "Door",
+        "args": {
+          "room":"the bend",
+          "exit":{"x":1,"y":1}
+        }
+      }
+    }
+  },
+  "the bend":{
+    "map":[
+      "WWWWW",
+      "W   W",
+      "WWW W",
+      "DB  W",
+      "WWWWW"
+    ],
+    "legend":{
+      "W":{"type": "Wall"},
+      " ":{"type": "Grass"},
+      "D":{"type": "Door",
+        "args": {
+        "room":"chestRoom",
+        "exit":{"x":2,"y":2}
+        }
+      },
+      "B":{"type": "Monster",
+        "args": {
+          "name":"Spider Boss",
+          "hp":20,
+          "attack":10,
+          "defence":5,
+          "experience":100,
+          "coins":200
+        }
+      }
+    }
+  },
+  "chestRoom":{
+    "map":[
+      "WWWWW",
+      "W   W",
+      "W   W",
+      "W c W",
+      "WWWWW"
+    ],
+    "legend":{
+      "W":{"type": "Wall"},
+      " ":{"type": "Grass"},
+      "c":{"type": "Chest",
+        "args":{
+          "coins":1000000
+        }
+      }
+    }
+  }
+}
