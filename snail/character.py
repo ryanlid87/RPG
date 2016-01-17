@@ -59,7 +59,7 @@ class Player(Character):
             name="ryan",
             hp=100,
             attack=8,
-            defenc=2,
+            defence=2,
             experience=0,
             coins=0)
         self.position = position
