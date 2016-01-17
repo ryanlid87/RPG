@@ -2,8 +2,10 @@ from iosystem import BaseIOSystem
 from actions import Action
 from engine import Engine
 
+
 class EndOfInputException(Exception):
     pass
+
 
 class TestingIOSystem(BaseIOSystem):
     """An automatic system that moves the player
@@ -13,16 +15,14 @@ class TestingIOSystem(BaseIOSystem):
     When we run out of preprogrammed actions the
     EndOfInputException is raised.
     """
-
-
     def __init__(self):
         self.events = []
         #      room1      the bend    chest
         path = "RRRRRR" + "RRDDLLL" + "D"
         mapping = {
-            "R":Action.Move.Right,
-            "D":Action.Move.Down,
-            "L":Action.Move.Left
+            "R": Action.Move.Right,
+            "D": Action.Move.Down,
+            "L": Action.Move.Left
         }
         # Convert from string (path) to actual Actions
         self.path = [mapping[action] for action in path]

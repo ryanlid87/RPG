@@ -1,9 +1,6 @@
-#from collections import namedtuple
-
 from actions import Action
 
-#CharacterBase = namedtuplei("CharacterBase", [
-#    "name", "hp", "attack", "defence", "experience", "coins"])
+
 class CharacterBase(object):
     def __init__(self, name, hp, attack, defence, experience, coins):
         self.name = name
@@ -59,12 +56,12 @@ class Player(Character):
     def __init__(self, position, ioSystem):
         Character.__init__(
             self,
-            name = "ryan",
-            hp = 100,
-            attack = 8,
-            defence = 2,
-            experience = 0,
-            coins = 0)
+            name="ryan",
+            hp=100,
+            attack=8,
+            defenc=2,
+            experience=0,
+            coins=0)
         self.position = position
         self.io = ioSystem
 

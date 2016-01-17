@@ -1,6 +1,13 @@
 from world import Level
 from character import Player
 from actions import Action
+from random import random
+
+
+def chance(odds):
+    """Returns True at the given odds (.5 == 50%)"""
+    return random() < odds
+
 
 class Engine:
     def __init__(self, ioSystem):
@@ -17,7 +24,7 @@ class Engine:
             action = attacker.getBattleAction(defender)
             if action == Action.Battle.Attack:
                 damage = attacker.attack - defender.defence
-                if damage <= 0: # Defence > attack
+                if damage <= 0:  # Defence > attack
                     self.ioSystem.attackMissed(attacker, defender)
                 else:
                     self.ioSystem.attackHit(attacker, defender, damage)
@@ -29,7 +36,7 @@ class Engine:
                 else:
                     self.ioSystem.runFailed(attacker, defender)
             else:
-                raise Exception("Invalid battle action: %s" %action)
+                raise Exception("Invalid battle action: %s" % action)
 
             attacker, defender = defender, attacker
 

@@ -8,6 +8,7 @@ rooms.
 Each room has a map and a legend that goes with it.
 """
 
+
 class Legend(object):
     def __init__(self, legendData):
         self.legend = legendData
@@ -33,10 +34,13 @@ class Room(object):
 
             for cell in mapRow:
                 tileRow.append(legend.create(cell))
+
     def at(self, x, y):
         return self.tiles[y][x]
+
     def setTile(self, x, y, tile):
         self.tiles[y][x] = tile
+
 
 class Level(object):
     def __init__(self, levelName):
@@ -55,7 +59,6 @@ class Level(object):
 
     def setTile(self, location, tile):
         self.rooms[location.room].setTile(location.x, location.y, tile)
+
     def at(self, location):
-        return self.rooms[location.room].at(location.x,location.y)
-
-
+        return self.rooms[location.room].at(location.x, location.y)

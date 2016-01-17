@@ -1,5 +1,5 @@
-from userInput import promptUser
 from actions import Action
+
 
 class BaseIOSystem(object):
     """This provides the user input/output endpoints."""
@@ -60,7 +60,7 @@ class ConsoleIOSystem(BaseIOSystem):
             if action == "status":
                 print "You:", player.status()
                 print "Them:", other.status()
-                continue # Ask again since 'status' isn't an action.
+                continue  # Ask again since 'status' isn't an action.
 
             if action == "run":
                 return Action.Battle.Run
@@ -90,7 +90,6 @@ class ConsoleIOSystem(BaseIOSystem):
                     "left": Action.Move.Left,
                     "right": Action.Move.Right
                 }[action]
-
 
     def promptUser(self, prompt, options):
         while True:

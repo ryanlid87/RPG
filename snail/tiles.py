@@ -15,6 +15,7 @@ if newTile.canEnter(player):
 
 classes = {}
 
+
 class Tile(object):
     def canEnter(self, player):
         """Returns True/False for if the player can enter this cell as is."""
@@ -81,8 +82,10 @@ class Chest(Tile):
     """ Chests don't work right yet..."""
     def __init__(self, contents):
         pass
+
     def canEnter(self, player):
         return True
+
     def onEnter(self, player, engine):
         pass
 classes["Chest"] = Chest
