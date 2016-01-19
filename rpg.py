@@ -20,6 +20,10 @@ class Character(object):
         if monster.hp < 1:
             self.exp = self.exp + monster.exp
             self.coin = self.coin + monster.coin
+            if player.Levelup() == 'levelup':
+                player.Levelup()
+                print '%s died and gave %s exp and %s coins.\n' %(monster.name,monster.exp,monster.coin)
+                return '%s leveled up.\n' %(self.name)
             if monster.name == 'spider':
                 player.flags.append('spider')
             return '%s died and gave %s exp and %s coins.\n' %(monster.name,monster.exp,monster.coin)
@@ -57,6 +61,7 @@ class Player(Character):
     
     def __init__(self):
         Character.__init__(self,'Ryan',100,10,3,0,0,Map.getstart(),[])
+        self.level = 1
         
     def __walk__(self, dx, dy):
         x = self.x + dx
@@ -71,7 +76,7 @@ class Player(Character):
         if Mapcall == 'wall':
             return 'You walked into a wall.'
         if Mapcall == 'monster':
-            self.monster = Monster()
+            self.monster = Map.MakeMonster()[Map.mname]
             player.battle(self.monster)
         if Mapcall == 'boss':
             if Map.mname == 'spiderboss' and not 'spider' in player.flags:
@@ -82,6 +87,14 @@ class Player(Character):
                 self.y += dy
                 print 'Here lies the dead spiderboss'
         return 'coord(%s, %s)' %(self.x,self.y)
+
+    def Levelup(self):
+        if self.exp > (self.level*25):
+            self.hp += 10
+            self.atk += 2
+            self.defence += 1
+            self.level += 1
+            return 'levelup'
 
     def walkR(self):
         return self.__walk__(1, 0)
@@ -96,7 +109,7 @@ class Player(Character):
             return self.__walk__(0, -1)
 
     def status(self):
-        return 'hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.hp,player.atk,player.defence,player.exp,player.coin)
+        return 'level = %s,hp = %s, atk = %s, def = %s, exp = %s, coins = %s' %(player.level,player.hp,player.atk,player.defence,player.exp,player.coin)
     def help(self):
         return ''' Here are the controls for the game:
         up - moves character up one pixel
@@ -108,17 +121,29 @@ class Player(Character):
 
 class Monster(Character):
     def __init__(self):
-        Character.__init__(self,'blob',10,2,2,1,1,(0,0),[])
+        Character.__init__(self,'blob',10,4,3,2,1,(0,0),[])
 
 class Spider(Monster):
     def __init__(self):
-        Character.__init__(self,'spider',20,10,5,100,1000,(0,0),[])
+        Character.__init__(self,'spider',20,10,5,30,100,(0,0),[])
+        
+class BlueSlime(Monster):
+    def __init__(self):
+        Character.__init__(self,'Blue Slime',15,6,4,4,3,(0,0),[])
+        
+class AssClown(Monster):
+    def __init__(self):
+        Character.__init__(self,'Ass Clown',20,8,5,8,10,(0,0),[])        
 
 class Map():
     def __init__(self):
         self.level = json.load(open('level.json'))
         self.mname = 'map'
         self.data = self.level[self.mname]
+
+    def MakeMonster(self):
+        return {'map':Monster(),'map2':BlueSlime(),'spiderboss':AssClown()}
+        
 
     def update(self,mname):
         for x in range(0,len(self.level['doors'])):
